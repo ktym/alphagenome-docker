@@ -38,7 +38,7 @@ APIキーを使って `run.py` を実行するには、環境変数として渡�
 docker run -it --rm \
   -v $(pwd):/alphagenome \
   -e API_KEY=your_real_api_key_here \
-  alphagenome-env python run.py
+  alphagenome-env python run.py seq.fa
 ```
 
 もしくは、このディレクトリに以下の内容を含む `.env` ファイルを作成してください：
@@ -53,7 +53,7 @@ API_KEY=your_real_api_key_here
 docker run -it --rm \
   -v $(pwd):/alphagenome \
   --env-file .env \
-  alphagenome-env python run.py
+  alphagenome-env python run.py seq.fa
 ```
 
 ## 作業ディレクトリのカスタマイズ

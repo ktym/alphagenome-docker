@@ -39,7 +39,7 @@ To run `run.py` with your API key, you can pass it as an environment variable:
 docker run -it --rm \
   -v $(pwd):/alphagenome \
   -e API_KEY=your_real_api_key_here \
-  alphagenome-env python run.py
+  alphagenome-env python run.py seq.fa
 ```
 
 Alternatively, create a .env file in this directory with the following content:
@@ -54,7 +54,7 @@ Then run the container using:
 docker run -it --rm \
   -v $(pwd):/alphagenome \
   --env-file .env \
-  alphagenome-env python run.py
+  alphagenome-env python run.py seq.fa
 ```
 
 ## Customize Working Directory
