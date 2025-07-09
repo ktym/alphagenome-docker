@@ -1,0 +1,35 @@
+# Use the official Python image as the base
+FROM python:3.10-slim
+
+# Set environment variable to avoid interactive prompts during package installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install required system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    git \
+    curl \
+    ca-certificates \
+    libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    libxrender-dev \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Upgrade pip to the latest version
+RUN pip install --upgrade pip
+
+# Install alphagenome and common Python libraries used in notebooks
+RUN pip install \
+    alphagenome \
+    matplotlib \
+    pandas \
+    numpy
+
+# Set the working directory
+WORKDIR /alphagenome
+
+# Start Python shell by default
+CMD ["python"]
+
