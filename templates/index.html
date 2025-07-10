@@ -1,0 +1,38 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AlphaGenome Web Interface</title>
+</head>
+<body>
+  <h2>AlphaGenome Analysis</h2>
+  <form action="/run" method="post">
+    <label for="sequence">DNA Sequence (FASTA format):</label><br>
+    <textarea name="sequence" rows="10" cols="80" required></textarea><br><br>
+
+    <label>Organs (UBERON terms):</label><br>
+    <select name="organs" multiple size="4">
+      <option value="Lung">Lung</option>
+      <option value="Brain">Brain</option>
+      <option value="Heart">Heart</option>
+      <option value="Liver">Liver</option>
+    </select><br><br>
+
+    <label>Output Types:</label><br>
+    <input type="checkbox" name="outputs" value="DNASE" checked> DNASE<br>
+    <input type="checkbox" name="outputs" value="CAGE"> CAGE<br>
+    <input type="checkbox" name="outputs" value="ATAC"> ATAC<br>
+    <input type="checkbox" name="outputs" value="RNA_SEQ"> RNA_SEQ<br>
+    <input type="checkbox" name="outputs" value="CHIP_HISTONE"> CHIP_HISTONE<br>
+    <input type="checkbox" name="outputs" value="CHIP_TF"> CHIP_TF<br>
+    <input type="checkbox" name="outputs" value="SPLICE_SITES"> SPLICE_SITES<br>
+    <input type="checkbox" name="outputs" value="SPLICE_SITE_USAGE"> SPLICE_SITE_USAGE<br>
+    <input type="checkbox" name="outputs" value="SPLICE_JUNCTIONS"> SPLICE_JUNCTIONS<br>
+    <input type="checkbox" name="outputs" value="CONTACT_MAPS"> CONTACT_MAPS<br>
+    <input type="checkbox" name="outputs" value="PROCAP"> PROCAP<br><br>
+
+    <button type="submit">Run AlphaGenome</button>
+  </form>
+</body>
+</html>

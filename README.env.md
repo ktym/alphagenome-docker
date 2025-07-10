@@ -8,7 +8,6 @@ This Docker image provides a minimal Python environment with [AlphaGenome](https
 - matplotlib
 - pandas
 - numpy
-- flask
 
 ## Requirements
 
@@ -19,20 +18,28 @@ This Docker image provides a minimal Python environment with [AlphaGenome](https
 To build the Docker image:
 
 ```bash
-docker build -t alphagenome-web .
+docker build -t alphagenome-env .
 ```
 
-This will create an image named `alphagenome-web`.
+This will create an image named `alphagenome-env`.
 
-## Run an Interactive AlphaGenome Web App
+## Run an Interactive Python Session
 
-To start an interactive Web app inside the container with your API key, you can pass it as an environment variable:
+To start an interactive Python session inside the container:
 
 ```bash
-docker run -it --rm -p 8080:8080 \
+docker run -it --rm alphagenome-env
+```
+
+## Use Your AlphaGenome API Key
+
+To run `run.py` with your API key, you can pass it as an environment variable:
+
+```bash
+docker run -it --rm \
   -v $(pwd):/alphagenome \
   -e API_KEY=your_real_api_key_here \
-  alphagenome-web
+  alphagenome-env python run.py seq.fa
 ```
 
 Alternatively, create a .env file in this directory with the following content:
@@ -44,13 +51,21 @@ API_KEY=your_real_api_key_here
 Then run the container using:
 
 ```bash
-docker run -it --rm -p 8080:8080 \
+docker run -it --rm \
   -v $(pwd):/alphagenome \
   --env-file .env \
-  alphagenome-web
+  alphagenome-env python run.py seq.fa
 ```
 
-Once the application is running, you can open a web interface where you can input a DNA sequence and run the analysis by visiting http://localhost:8080/ in your browser.
+## Customize Working Directory
+
+By default, the working directory inside the container is set to `/alphagenome`.
+
+You can mount your local project directory to it using:
+
+```bash
+docker run -it --rm -v $(pwd):/alphagenome alphagenome-env
+```
 
 ## Supported analyses types in AlphaGenome
 
@@ -67,6 +82,16 @@ Once the application is running, you can open a web interface where you can inpu
 | SPLICE_JUNCTIONS    | Inferred exon junctions from RNA-seq reads                                  | Alternative splicing patterns                                        |
 | CONTACT_MAPS        | Chromatin interaction data (e.g., Hi-C, Micro-C)                            | 3D genome organization; enhancer-promoter loops                      |
 | PROCAP              | High-resolution identification of transcription start sites via run-on cap | Active transcription initiation; enhancer activity                   |
+
+## Optional: Use JupyterLab
+
+To run JupyterLab instead of a Python shell, modify the CMD in the Dockerfile or override it:
+
+```bash
+docker run -it --rm -p 8888:8888 alphagenome-env jupyter lab --ip=0.0.0.0 --allow-root --no-browser
+```
+
+Then access it at http://localhost:8888 in your browser.
 
 ## License
 

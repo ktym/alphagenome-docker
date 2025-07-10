@@ -7,8 +7,6 @@
 - alphagenome
 - matplotlib
 - pandas
-- numpy
-- flask
 
 ## 必要条件
 
@@ -19,20 +17,28 @@
 Dockerイメージをビルドするには、以下を実行します：
 
 ```bash
-docker build -t alphagenome-web .
+docker build -t alphagenome-env .
 ```
 
-これにより、`alphagenome-web` という名前のイメージが作成されます。
+これにより、`alphagenome-env` という名前のイメージが作成されます。
 
-## AlphaGenome Web アプリの実行
+## 対話型Pythonセッションの実行
 
-コンテナ内で AlphaGenome Web アプリをAPIキーを使って実行するには、環境変数として渡すことができます：
+コンテナ内で対話型のPythonセッションを開始するには：
 
 ```bash
-docker run -it --rm -p 8080:8080 \
+docker run -it --rm alphagenome-env
+```
+
+## AlphaGenome APIキーの使用
+
+APIキーを使って `run.py` を実行するには、環境変数として渡すことができます：
+
+```bash
+docker run -it --rm \
   -v $(pwd):/alphagenome \
   -e API_KEY=your_real_api_key_here \
-  alphagenome-web
+  alphagenome-env python run.py seq.fa
 ```
 
 もしくは、このディレクトリに以下の内容を含む `.env` ファイルを作成してください：
@@ -44,13 +50,21 @@ API_KEY=your_real_api_key_here
 その後、次のコマンドでコンテナを実行します：
 
 ```bash
-docker run -it --rm -p 8080:8080 \
+docker run -it --rm \
   -v $(pwd):/alphagenome \
   --env-file .env \
-  alphagenome-web
+  alphagenome-env python run.py seq.fa
 ```
 
-アプリが起動したら、`http://localhost:8080/` にアクセスすることで、塩基配列を入力して解析を行うことのできるウェブインターフェイスを開くことができます。
+## 作業ディレクトリのカスタマイズ
+
+デフォルトでは、コンテナ内の作業ディレクトリは `/alphagenome` に設定されています。
+
+ローカルのプロジェクトディレクトリをこれにマウントするには：
+
+```bash
+docker run -it --rm -v $(pwd):/alphagenome alphagenome-env
+```
 
 ## AlphaGenomeで利用できる解析
 
@@ -67,6 +81,17 @@ docker run -it --rm -p 8080:8080 \
 | SPLICE_JUNCTIONS       | RNA-seqリードから推定されるエクソン接合部                                        | 代替スプライシングの検出                                            |
 | CONTACT_MAPS           | Hi-CやMicro-Cなどによるクロマチン相互作用データ                                 | 3次元ゲノム構造、エンハンサー・プロモーターのループ解析             |
 | PROCAP                 | 精密なrun-on法による転写開始点の高解像度検出                                   | 活性なTSSの検出、エンハンサーの転写活性評価                         |
+
+
+## オプション：JupyterLabの使用
+
+Pythonシェルの代わりにJupyterLabを起動するには、Dockerfile内のCMDを変更するか、以下のように上書きします：
+
+```bash
+docker run -it --rm -p 8888:8888 alphagenome-env jupyter lab --ip=0.0.0.0 --allow-root --no-browser
+```
+
+その後、ブラウザで http://localhost:8888 にアクセスしてください。
 
 ## ライセンス
 
